@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import ChatWidget from './components/ChatWidget/ChatWidget';
+import FilterComponent from './components/FilterComponent/FilterComponent';
+import Logo from './components/Logo/Logo';
+import MapComponent from './components/MapComponent/MapComponent';
+import TabBar from './components/TabBar/TabBar';
+import { AppContainer, Header, ContentContainer } from './App.styles';
 
 function App() {
+  const [isChatOpen, setIsChatOpen] = useState(true);
+  const [activeTab, setActiveTab] = useState('chat');
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppContainer>
+      <Header>
+      <Logo />
+      <TabBar activeTab={activeTab} onTabClick={handleTabClick} />
+      </Header>
+      <ContentContainer>
+        <MapComponent isChatOpen={isChatOpen} />
+        {isChatOpen && (activeTab === 'chat' ? <ChatWidget /> : <FilterComponent />)}
+      </ContentContainer>
+    </AppContainer>
   );
 }
 
